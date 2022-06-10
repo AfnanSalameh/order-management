@@ -1,10 +1,14 @@
 package com.example.demo.Entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table
+
+@Data
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

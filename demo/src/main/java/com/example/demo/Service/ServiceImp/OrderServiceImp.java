@@ -1,59 +1,57 @@
 package com.example.demo.Service.ServiceImp;
 
+import com.example.demo.Dto.OrderDto;
 import com.example.demo.Entity.Order;
 import com.example.demo.Repository.OrderRepository;
-import com.example.demo.Repository.ProductRepository;
 import com.example.demo.Service.OrderService;
 import com.example.demo.exception.ResourceNotFoundException;
 
-import javax.validation.constraints.NotNull;
-import java.util.Optional;
+import java.util.List;
 
-public abstract class OrderServiceImp extends OrderService {
+public abstract class OrderServiceImp implements  OrderService {
 
     private OrderRepository orderRepository;
 
-    public OrderServiceImp(ProductRepository productRepository) {
-        this.orderRepository = orderRepository;
-    }
 
     @Override
-    public @NotNull Iterable<Order> getAllOrders() {
+    public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
 
 
 
-    @Override
-    public Order getOrder(int id) {
-        return orderRepository
-                .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));    }
+
+    public OrderDto updateOrder(OrderDto orderDto, int id) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("order", "id", id));
+
+        order.setId(orderDto.getId());
+        order.setOrderedAt(orderDto.getOrderedAt());
+        order.setCustomerId(orderDto.getCustomerId());
 
 
-
-    @Override
-    public Order save(Order order) {
-
-        return orderRepository.save(order);
+        Order updatedo = orderRepository.save(order);
+        return mapToDTO(updatedo);
     }
 
-    @Override
-    public Order update(Long id, Order order) {
-        return null;
+
+
+    private OrderDto mapToDTO(Order order){
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setCustomerId(order.getCustomerId());
+        orderDto.setOrderedAt(order.getOrderedAt());
+               return orderDto;
     }
 
-    @Override
-    public Order update(int id, Order orderDTO) {
-        Optional<Order> order = orderRepository.findById(id);
-        order.get().setId(orderDTO.getId());
+    private Order mapToEntity(OrderDto orderDto){
+        Order order = new Order();
+        order.setId(orderDto.getId());
+        order.setOrderedAt(orderDto.getOrderedAt());
+        order.setCustomerId(orderDto.getCustomerId());
+        return order;
 
-        Order result = orderRepository.save(order.get());
-        //todo you should use mappers to spperate the DTO and entities usage.
-        return result;
     }
-
 
 
 }

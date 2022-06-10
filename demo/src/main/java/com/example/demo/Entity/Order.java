@@ -24,14 +24,13 @@ public class Order {
 
 
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     //fetch lazy -> fetch related entity from database
     @JoinColumn(name = "customer_id",referencedColumnName = "id")
     private Customer customer;
 
-    //relation between product order and product is one to many
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<Product_order> productOrderSet= new HashSet<>();
+
 
     public Customer getCustomer() {
         return customer;

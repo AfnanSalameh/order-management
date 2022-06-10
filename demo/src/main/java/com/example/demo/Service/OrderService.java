@@ -1,32 +1,19 @@
 package com.example.demo.Service;
-
-
-
 import com.example.demo.Dto.OrderDto;
 import com.example.demo.Entity.Order;
-
 import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.NotNull;
+ import java.util.List;
 
 @Service
-public abstract class OrderService {
+public interface OrderService {
+    OrderDto insertOrder(OrderDto order_Dto);
 
-    public abstract Order getOrder(int id);
+    List<OrderDto> findOrderCertainDate(String date);
+    List<Order> getAllOrders();
 
-    public abstract @NotNull Iterable<Order> getAllOrders();
+    OrderDto getOrderById(int id);
 
-    public abstract OrderDto getOrderById(int id);
+    OrderDto updateOrder(OrderDto order_Dto, int id);
 
-    public abstract OrderDto addOrder(OrderDto OrderDto);
-
-    public abstract OrderDto updateOrder(OrderDto OrderDto, int id);
-
-    public abstract void deleteCustomer(int id);
-
-    public abstract Order save(Order order);
-
-    public abstract Order update(Long id, Order order);
-
-    public abstract Order update(int id, Order orderDTO);
+    void deleteOrderById(int id);
 }
